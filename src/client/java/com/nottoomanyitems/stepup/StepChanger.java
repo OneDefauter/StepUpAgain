@@ -1,25 +1,20 @@
 package com.nottoomanyitems.stepup;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Formatting;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_J;
+
+import com.mojang.blaze3d.platform.InputConstants;
 
 public final class StepChanger implements ClientTickEvents.EndTick {
     private static final double DEFAULT_STEP_HEIGHT = 0.6D;
@@ -29,13 +24,13 @@ public final class StepChanger implements ClientTickEvents.EndTick {
     private static final int MODE_DISABLED = 1;
     private static final int MODE_VANILLA = 2;
 
-    private KeyBinding toggleKey;
+    private KeyMapping toggleKey;
     private int autoJumpState = StepUpConfig.getDefaultState();
     private String serverKey = StepUpConfig.LOCAL_SERVER_KEY;
     private boolean announceState;
 
     public void initialize() {
-        toggleKey = KeyBindingHelper.registerKeyBinding(createToggleKeyBinding());
+        toggleKey = KeyMappingHelper.registerKeyMapping(createToggleKeyBinding());
     }
 
     public void handleServerJoin(String serverKey) {
@@ -52,13 +47,13 @@ public final class StepChanger implements ClientTickEvents.EndTick {
     }
 
     @Override
-    public void onEndTick(MinecraftClient client) {
-        ClientPlayerEntity player = client.player;
+    public void onEndTick(Minecraft client) {
+        LocalPlayer player = client.player;
         if (player == null) {
             return;
         }
 
-        while (toggleKey.wasPressed()) {
+        while (toggleKey.consumeClick()) {
             autoJumpState = (autoJumpState + 1) % 3;
             StepUpConfig.setServerState(serverKey, autoJumpState);
             announceState = true;
@@ -68,27 +63,27 @@ public final class StepChanger implements ClientTickEvents.EndTick {
         updateStepHeight(player);
 
         if (announceState) {
-            player.sendMessage(buildStatusMessage(), false);
+            player.sendSystemMessage(buildStatusMessage());
             announceState = false;
         }
     }
 
-    private void updateAutoJump(MinecraftClient client) {
-        SimpleOption<Boolean> option = client.options.getAutoJump();
+    private void updateAutoJump(Minecraft client) {
+        OptionInstance<Boolean> option = client.options.autoJump();
         boolean shouldEnableAutoJump = autoJumpState == MODE_VANILLA;
 
-        if (option.getValue() != shouldEnableAutoJump) {
-            option.setValue(shouldEnableAutoJump);
+        if (option.get() != shouldEnableAutoJump) {
+            option.set(shouldEnableAutoJump);
         }
     }
 
-    private void updateStepHeight(ClientPlayerEntity player) {
-        EntityAttributeInstance attribute = player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
+    private void updateStepHeight(LocalPlayer player) {
+        AttributeInstance attribute = player.getAttribute(Attributes.STEP_HEIGHT);
         if (attribute == null) {
             return;
         }
 
-        double targetStepHeight = autoJumpState == MODE_STEP_UP && !player.isSneaking()
+        double targetStepHeight = autoJumpState == MODE_STEP_UP && !player.isShiftKeyDown()
                 ? STEP_UP_HEIGHT
                 : DEFAULT_STEP_HEIGHT;
 
@@ -97,84 +92,32 @@ public final class StepChanger implements ClientTickEvents.EndTick {
         }
     }
 
-    private KeyBinding createToggleKeyBinding() {
-        try {
-            for (Constructor<?> constructor : KeyBinding.class.getConstructors()) {
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
-                if (parameterTypes.length != 4
-                        || parameterTypes[0] != String.class
-                        || parameterTypes[1] != InputUtil.Type.class
-                        || parameterTypes[2] != int.class) {
-                    continue;
-                }
-
-                return (KeyBinding) constructor.newInstance(
-                        "key.stepup.toggle",
-                        InputUtil.Type.KEYSYM,
-                        GLFW_KEY_J,
-                        resolveCategoryArgument(parameterTypes[3])
-                );
-            }
-        } catch (ReflectiveOperationException exception) {
-            throw new IllegalStateException("Failed to create StepUp key binding", exception);
-        }
-
-        throw new IllegalStateException("Unsupported KeyBinding constructor for this Minecraft version");
+    private KeyMapping createToggleKeyBinding() {
+        return new KeyMapping(
+                "key.stepup.toggle",
+                InputConstants.Type.KEYSYM,
+                GLFW_KEY_J,
+                KeyMapping.Category.MISC
+        );
     }
 
-    private Object resolveCategoryArgument(Class<?> categoryType) throws ReflectiveOperationException {
-        if (categoryType == String.class) {
-            return "key.categories.misc";
-        }
-
-        for (Field field : categoryType.getFields()) {
-            if (!Modifier.isStatic(field.getModifiers()) || field.getType() != categoryType) {
-                continue;
-            }
-
-            Object candidate = field.get(null);
-            if (candidate != null && candidate.toString().toLowerCase().contains("misc")) {
-                return candidate;
-            }
-        }
-
-        for (Method method : categoryType.getMethods()) {
-            if (!Modifier.isStatic(method.getModifiers())
-                    || method.getReturnType() != categoryType
-                    || method.getParameterCount() != 1) {
-                continue;
-            }
-
-            Class<?> parameterType = method.getParameterTypes()[0];
-            if (parameterType == String.class) {
-                return method.invoke(null, "key.categories.misc");
-            }
-
-            if (parameterType == Identifier.class) {
-                return method.invoke(null, Identifier.ofVanilla("misc"));
-            }
-        }
-
-        throw new IllegalStateException("Unsupported KeyBinding category type: " + categoryType.getName());
-    }
-
-    private Text buildStatusMessage() {
-        MutableText prefix = Text.empty()
-                .append(Text.literal("[").formatted(Formatting.DARK_AQUA))
-                .append(Text.literal(StepUpClient.MOD_NAME).formatted(Formatting.YELLOW))
-                .append(Text.literal("] ").formatted(Formatting.DARK_AQUA));
+    private Component buildStatusMessage() {
+        MutableComponent prefix = Component.empty()
+                .append(Component.literal("[").withStyle(ChatFormatting.DARK_AQUA))
+                .append(Component.literal(StepUpClient.MOD_NAME).withStyle(ChatFormatting.YELLOW))
+                .append(Component.literal("] ").withStyle(ChatFormatting.DARK_AQUA));
 
         return prefix.append(switch (autoJumpState) {
-            case MODE_STEP_UP -> Text.translatable("mod.stepup.enabled").formatted(Formatting.GREEN);
-            case MODE_DISABLED -> Text.translatable("mod.stepup.disabled").formatted(Formatting.RED);
-            case MODE_VANILLA -> Text.empty()
-                    .append(Text.translatable("mod.stepup.minecraft"))
-                    .append(Text.literal(" "))
-                    .append(Text.translatable("mod.stepup.autojump"))
-                    .append(Text.literal(" "))
-                    .append(Text.translatable("mod.stepup.enabled"))
-                    .formatted(Formatting.GREEN);
-            default -> Text.translatable("mod.stepup.disabled").formatted(Formatting.RED);
+            case MODE_STEP_UP -> Component.translatable("mod.stepup.enabled").withStyle(ChatFormatting.GREEN);
+            case MODE_DISABLED -> Component.translatable("mod.stepup.disabled").withStyle(ChatFormatting.RED);
+            case MODE_VANILLA -> Component.empty()
+                    .append(Component.translatable("mod.stepup.minecraft"))
+                    .append(Component.literal(" "))
+                    .append(Component.translatable("mod.stepup.autojump"))
+                    .append(Component.literal(" "))
+                    .append(Component.translatable("mod.stepup.enabled"))
+                    .withStyle(ChatFormatting.GREEN);
+            default -> Component.translatable("mod.stepup.disabled").withStyle(ChatFormatting.RED);
         });
     }
 }

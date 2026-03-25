@@ -3,7 +3,7 @@ package com.nottoomanyitems.stepup;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.multiplayer.ServerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,17 +20,17 @@ public final class StepUpClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(STEP_CHANGER);
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->
-                STEP_CHANGER.handleServerJoin(resolveServerKey(client.getCurrentServerEntry())));
+                STEP_CHANGER.handleServerJoin(resolveServerKey(client.getCurrentServer())));
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> STEP_CHANGER.handleDisconnect());
     }
 
-    private static String resolveServerKey(ServerInfo serverInfo) {
+    private static String resolveServerKey(ServerData serverInfo) {
         if (serverInfo == null) {
             return StepUpConfig.LOCAL_SERVER_KEY;
         }
 
-        if (serverInfo.address != null && !serverInfo.address.isBlank()) {
-            return serverInfo.address;
+        if (serverInfo.ip != null && !serverInfo.ip.isBlank()) {
+            return serverInfo.ip;
         }
 
         if (serverInfo.name != null && !serverInfo.name.isBlank()) {

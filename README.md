@@ -1,6 +1,6 @@
 # StepUp
 
-An updated Fabric build of **StepUp** for Minecraft `1.21.x`, covering `1.21` through `1.21.11`.
+An updated Fabric build of **StepUp** for Minecraft `26.1`.
 
 StepUp increases the player's step height so you can walk up blocks smoothly instead of jumping into them. The result feels similar to vanilla auto-jump at first glance, but the movement is more direct and avoids the awkward timing and hunger cost of repeated jumps.
 
@@ -93,10 +93,10 @@ The file keeps:
 
 ## Requirements
 
-- Minecraft Java Edition `1.21` to `1.21.11`
+- Minecraft Java Edition `26.1`
 - Fabric Loader
 - Fabric API
-- Java 21
+- Java 25
 
 ## Installation
 
@@ -109,24 +109,13 @@ Because this mod is client-side, it does not require a server-side installation 
 
 ## Compatibility
 
-This fork was updated specifically for the full Minecraft `1.21.x` line.
+This fork was updated specifically for Minecraft `26.1`.
 
-The same jar is intended to run on:
+This port includes the required 26.1 migration work:
 
-- `1.21`
-- `1.21.1`
-- `1.21.2`
-- `1.21.3`
-- `1.21.4`
-- `1.21.5`
-- `1.21.6`
-- `1.21.7`
-- `1.21.8`
-- `1.21.9`
-- `1.21.10`
-- `1.21.11`
-
-Internally, this fork includes compatibility work for API differences across the `1.21.x` series, especially around client keybinding and step-height handling.
+- migration from Yarn to Mojang's official mappings,
+- the unobfuscated `net.fabricmc.fabric-loom` build setup,
+- and Java 25 / Fabric 26.1 API compatibility.
 
 ## Notes
 
@@ -141,7 +130,7 @@ Full credit for the original public **StepUp** mod release and maintenance goes 
 - Original author profile: <https://modrinth.com/user/Giselbaer>
 - Original mod page: <https://modrinth.com/mod/stepup>
 
-This fork exists only to keep the mod usable on newer Fabric `1.21.x` versions.
+This fork exists only to keep the mod usable on newer Fabric `26.1` versions.
 
 The upstream history of the project also includes earlier StepUp/StepUpNext work reflected in the archived repository and license notices. This fork keeps that lineage intact while updating compatibility for current versions.
 

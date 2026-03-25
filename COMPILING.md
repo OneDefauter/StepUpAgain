@@ -1,32 +1,31 @@
-# TL;DR
+# Building StepUp
 
-- Get a version of gradle that's at least 4.10.2
-- `git clone <repo>`
-- `git branch -r`  to see available branches
-- `git checkout fabric_1_16` to select your branch
-- `git submodule init`
-- `git submodule update`
-- `/path/to/gradle build`
+## Requirements
 
-# How to compile this mod
+- Java 25
+- Internet access for Gradle to download Minecraft/Fabric dependencies on the first build
 
-Because I created several mods, which have some things in common, the structure of my mods is a bit different from the example mod that Fabric or Forge provide.
+## Build
 
-In particular, I don't want the gradle files to be duplicated into every single mod repository, and some common files that contain version info for Fabric, its tools, and some library mods, have been moved to a (common) submodule.
+Use the Gradle wrapper that ships with the repository.
 
-# Prerequisites
+On Windows:
 
-You need a gradle installation which does not come with the mod. At the time of this writing, the version of gradle used is 4.10.2. Gradle 6.5 has been tested to work too, so versions between those *should* as well.
+```powershell
+.\gradlew.bat build
+```
 
-You might already have gradle installed, especially when you're running Linux - if so, make sure it's new enough. For example, Ubuntu 18.04 has gradle 4.4.1 which is not. Run `gradle -version` to check.
+On macOS/Linux:
 
-If you have the Fabric example mod installed, you can use the gradle installation from there. Else, download a release from https://gradle.org/releases/ (binary only is sufficient) and unpack it somewhere.
+```sh
+./gradlew build
+```
 
-# Versionfiles submodule
+The built jar will be written to `build/libs/`.
 
-All my mods use the same repository of files that match MineCraft, Fabric, and common libraries versions. This is included in the mod repository as a Versionfiles submodule, and you should get it when cloning the repo. Run `git submodule init`, then `git submodule update` to get the current version of the files. Do this after selecting your branch, see below.
+## Notes
 
-# Compiling the mod
-
-There are branches for the various versions of MineCraft that are supported by the mod. Run `git branch -r` to see which branches there are, then `git checkout branchname` without the `origin/` part, for example, `git checkout fabric_1_16`.
+- This branch targets Minecraft `26.1`.
+- The build uses Gradle `9.4.0` via the wrapper.
+- Minecraft `26.1` requires Java 25 for the Gradle JVM.
 
