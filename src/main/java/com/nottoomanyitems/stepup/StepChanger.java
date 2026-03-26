@@ -1,7 +1,6 @@
 package com.nottoomanyitems.stepup;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -11,12 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_J;
 
-import com.mojang.blaze3d.platform.InputConstants;
-
-public final class StepChanger implements ClientTickEvents.EndTick {
+public final class StepChanger {
     private static final double DEFAULT_STEP_HEIGHT = 0.6D;
     private static final double STEP_UP_HEIGHT = 1.25D;
 
@@ -29,15 +27,16 @@ public final class StepChanger implements ClientTickEvents.EndTick {
     private String serverKey = StepUpConfig.LOCAL_SERVER_KEY;
     private boolean announceState;
 
-    public void initialize() {
-        toggleKey = KeyMappingHelper.registerKeyMapping(createToggleKeyBinding());
+    public void registerKeyMapping(RegisterKeyMappingsEvent event) {
+        toggleKey = createToggleKeyBinding();
+        event.register(toggleKey);
     }
 
     public void handleServerJoin(String serverKey) {
         this.serverKey = serverKey;
         this.autoJumpState = StepUpConfig.getServerState(serverKey);
         this.announceState = true;
-        StepUpClient.LOGGER.info("Loaded StepUp state {} for {}", autoJumpState, serverKey);
+        StepUp.LOGGER.info("Loaded StepUp state {} for {}", autoJumpState, serverKey);
     }
 
     public void handleDisconnect() {
@@ -46,17 +45,18 @@ public final class StepChanger implements ClientTickEvents.EndTick {
         this.announceState = false;
     }
 
-    @Override
     public void onEndTick(Minecraft client) {
         LocalPlayer player = client.player;
         if (player == null) {
             return;
         }
 
-        while (toggleKey.consumeClick()) {
-            autoJumpState = (autoJumpState + 1) % 3;
-            StepUpConfig.setServerState(serverKey, autoJumpState);
-            announceState = true;
+        if (toggleKey != null) {
+            while (toggleKey.consumeClick()) {
+                autoJumpState = (autoJumpState + 1) % 3;
+                StepUpConfig.setServerState(serverKey, autoJumpState);
+                announceState = true;
+            }
         }
 
         updateAutoJump(client);
@@ -104,7 +104,7 @@ public final class StepChanger implements ClientTickEvents.EndTick {
     private Component buildStatusMessage() {
         MutableComponent prefix = Component.empty()
                 .append(Component.literal("[").withStyle(ChatFormatting.DARK_AQUA))
-                .append(Component.literal(StepUpClient.MOD_NAME).withStyle(ChatFormatting.YELLOW))
+                .append(Component.literal(StepUp.MOD_NAME).withStyle(ChatFormatting.YELLOW))
                 .append(Component.literal("] ").withStyle(ChatFormatting.DARK_AQUA));
 
         return prefix.append(switch (autoJumpState) {

@@ -3,7 +3,7 @@ package com.nottoomanyitems.stepup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,7 +18,7 @@ public final class StepUpConfig {
     public static final String LOCAL_SERVER_KEY = "singleplayer";
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("stepup.json");
+    private static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve("stepup.json");
 
     private static ConfigData data = new ConfigData();
 
@@ -33,7 +33,7 @@ public final class StepUpConfig {
                     data = loaded;
                 }
             } catch (IOException | JsonParseException exception) {
-                StepUpClient.LOGGER.warn("Could not read StepUp config {}, using defaults.", CONFIG_PATH, exception);
+                StepUp.LOGGER.warn("Could not read StepUp config {}, using defaults.", CONFIG_PATH, exception);
             }
         }
 
@@ -99,7 +99,7 @@ public final class StepUpConfig {
                 GSON.toJson(data, writer);
             }
         } catch (IOException exception) {
-            StepUpClient.LOGGER.warn("Could not save StepUp config {}", CONFIG_PATH, exception);
+            StepUp.LOGGER.warn("Could not save StepUp config {}", CONFIG_PATH, exception);
         }
     }
 
