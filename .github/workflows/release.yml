@@ -1,0 +1,57 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: setup jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: build
+        run: ./gradlew build
+
+      - name: prepare release notes
+        shell: bash
+        run: |
+          NOTES_FILE=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [ -f "$NOTES_FILE" ]; then
+            cp "$NOTES_FILE" release-notes.md
+          else
+            cat > release-notes.md <<EOF
+          ## Changelog
+
+          - Automated release for ${GITHUB_REF_NAME}.
+          EOF
+          fi
+
+      - name: publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: StepUp ${{ github.ref_name }}
+          body_path: release-notes.md
+          files: |
+            build/libs/*.jar
