@@ -1,8 +1,15 @@
-# StepUp
+# StepUp Fabric
 
-An updated Fabric build of **StepUp** for Minecraft `26.1`.
+An updated Fabric build of **StepUp** for Minecraft `26.1` - `26.1.1`.
 
 Current release: `1.4.3+mc26.1`.
+
+## Release Info
+
+- Loader: `Fabric`
+- Minecraft: `26.1` - `26.1.1`
+- Version: `1.4.3+mc26.1`
+- Environment: `Client-side`
 
 StepUp increases the player's step height so you can walk up blocks smoothly instead of jumping into them. The result feels similar to vanilla auto-jump at first glance, but the movement is more direct and avoids the awkward timing and hunger cost of repeated jumps.
 
@@ -100,7 +107,7 @@ If you have both **Mod Menu** and **Cloth Config** installed, StepUp exposes thi
 
 ## Requirements
 
-- Minecraft Java Edition `26.1`
+- Minecraft Java Edition `26.1` - `26.1.1`
 - Fabric Loader
 - Fabric API
 - Java 25
@@ -117,7 +124,7 @@ Because this mod is client-side, it does not require a server-side installation 
 
 ## Compatibility
 
-This fork was updated specifically for Minecraft `26.1`.
+This Fabric fork was updated specifically for Minecraft `26.1`.
 
 This port includes the required 26.1 migration work:
 
@@ -136,8 +143,6 @@ This port includes the required 26.1 migration work:
 ### `1.4.3+mc26.1`
 
 - Restored separate default actions for `J` and `K`.
-- `J` now toggles the active movement mode while `K` toggles whether `Vanilla Auto Jump` is part of the cycle.
-- Added a dedicated `StepUp` controls category so both bindings show up together.
 
 ### `1.4.2+mc26.1`
 
