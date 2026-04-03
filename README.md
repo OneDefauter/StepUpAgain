@@ -2,7 +2,7 @@
 
 An updated Fabric build of **StepUp** for Minecraft `26.1`.
 
-Current release: `1.4.2+mc26.1`.
+Current release: `1.4.3+mc26.1`.
 
 StepUp increases the player's step height so you can walk up blocks smoothly instead of jumping into them. The result feels similar to vanilla auto-jump at first glance, but the movement is more direct and avoids the awkward timing and hunger cost of repeated jumps.
 
@@ -57,10 +57,11 @@ This is the main feature mode.
 
 ## Controls
 
-By default, the mode toggle is bound to `J`.
+By default, `J` toggles the active movement mode and `K` toggles whether `Vanilla Auto Jump` is included in that cycle.
 
 - Press `J` to switch between `StepUp`, `Disabled`, and `Vanilla Auto Jump`.
-- The key can be changed in Minecraft's Controls menu like any normal keybind.
+- Press `K` to add or remove `Vanilla Auto Jump` from the `J` cycle.
+- Both keys can be changed in Minecraft's Controls menu under the `StepUp` category.
 - When you switch modes, the mod shows a short status message in chat so you can see the active mode immediately.
 - If you disable the vanilla mode in the config, `J` switches only between `StepUp` and `Disabled`.
 
@@ -84,7 +85,7 @@ This is useful because some servers may feel better with the feature enabled, wh
 The file keeps:
 
 - a default state for new worlds and unknown servers,
-- a toggle that decides whether `Vanilla Auto Jump` is included in the `J` cycle,
+- a toggle that decides whether `Vanilla Auto Jump` is included in the key toggle cycle,
 - and a list of server-specific overrides keyed by server address or singleplayer.
 
 If you have both **Mod Menu** and **Cloth Config** installed, StepUp exposes this option through a config screen in Mod Menu. Without them, the mod still works normally and keeps using `config/stepup.json`.
@@ -131,6 +132,12 @@ This port includes the required 26.1 migration work:
 - Some servers may still interfere with the effect if they change movement behavior or enforce custom restrictions.
 
 ## Changelog
+
+### `1.4.3+mc26.1`
+
+- Restored separate default actions for `J` and `K`.
+- `J` now toggles the active movement mode while `K` toggles whether `Vanilla Auto Jump` is part of the cycle.
+- Added a dedicated `StepUp` controls category so both bindings show up together.
 
 ### `1.4.2+mc26.1`
 

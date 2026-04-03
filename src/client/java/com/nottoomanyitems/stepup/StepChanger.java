@@ -9,24 +9,30 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_J;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
 public final class StepChanger implements ClientTickEvents.EndTick {
     private static final double DEFAULT_STEP_HEIGHT = 0.6D;
     private static final double STEP_UP_HEIGHT = 1.25D;
+    private static final KeyMapping.Category STEPUP_KEY_CATEGORY =
+            KeyMapping.Category.register(Identifier.fromNamespaceAndPath(StepUpClient.MOD_ID, "controls"));
 
-    private KeyMapping toggleKey;
+    private KeyMapping toggleModeKey;
+    private KeyMapping toggleVanillaCycleKey;
     private int autoJumpState = StepUpConfig.getDefaultState();
     private String serverKey = StepUpConfig.LOCAL_SERVER_KEY;
     private boolean announceState;
 
     public void initialize() {
-        toggleKey = KeyMappingHelper.registerKeyMapping(createToggleKeyBinding());
+        toggleModeKey = KeyMappingHelper.registerKeyMapping(createToggleKeyBinding("key.stepup.toggle", GLFW_KEY_J));
+        toggleVanillaCycleKey = KeyMappingHelper.registerKeyMapping(createToggleKeyBinding("key.stepup.toggle_vanilla_cycle", GLFW_KEY_K));
     }
 
     public void handleServerJoin(String serverKey) {
@@ -51,7 +57,15 @@ public final class StepChanger implements ClientTickEvents.EndTick {
 
         syncStateWithConfig();
 
-        while (toggleKey.consumeClick()) {
+        Component cycleMessage = null;
+        while (toggleVanillaCycleKey.consumeClick()) {
+            boolean enabled = !StepUpConfig.isVanillaAutoJumpModeEnabled();
+            StepUpConfig.setVanillaAutoJumpModeEnabled(enabled);
+            syncStateWithConfig();
+            cycleMessage = buildVanillaCycleMessage(enabled);
+        }
+
+        while (toggleModeKey.consumeClick()) {
             autoJumpState = StepUpConfig.getNextState(autoJumpState);
             StepUpConfig.setServerState(serverKey, autoJumpState);
             announceState = true;
@@ -59,6 +73,10 @@ public final class StepChanger implements ClientTickEvents.EndTick {
 
         updateAutoJump(client);
         updateStepHeight(player);
+
+        if (cycleMessage != null) {
+            player.sendSystemMessage(cycleMessage);
+        }
 
         if (announceState) {
             player.sendSystemMessage(buildStatusMessage());
@@ -90,12 +108,12 @@ public final class StepChanger implements ClientTickEvents.EndTick {
         }
     }
 
-    private KeyMapping createToggleKeyBinding() {
+    private KeyMapping createToggleKeyBinding(String translationKey, int defaultKey) {
         return new KeyMapping(
-                "key.stepup.toggle",
+                translationKey,
                 InputConstants.Type.KEYSYM,
-                GLFW_KEY_J,
-                KeyMapping.Category.MISC
+                defaultKey,
+                STEPUP_KEY_CATEGORY
         );
     }
 
@@ -117,6 +135,17 @@ public final class StepChanger implements ClientTickEvents.EndTick {
                     .withStyle(ChatFormatting.GREEN);
             default -> Component.translatable("mod.stepup.disabled").withStyle(ChatFormatting.RED);
         });
+    }
+
+    private Component buildVanillaCycleMessage(boolean enabled) {
+        MutableComponent prefix = Component.empty()
+                .append(Component.literal("[").withStyle(ChatFormatting.DARK_AQUA))
+                .append(Component.literal(StepUpClient.MOD_NAME).withStyle(ChatFormatting.YELLOW))
+                .append(Component.literal("] ").withStyle(ChatFormatting.DARK_AQUA));
+
+        return prefix.append(Component.translatable(
+                enabled ? "mod.stepup.config.allowvanillamode.enabled" : "mod.stepup.config.allowvanillamode.disabled"
+        ).withStyle(enabled ? ChatFormatting.GREEN : ChatFormatting.RED));
     }
 
     private void syncStateWithConfig() {
