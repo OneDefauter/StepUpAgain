@@ -8,8 +8,8 @@ Use the branch that matches the exact platform and version you want.
 ### Minecraft `26.1`
 
 - Branch: [Fabric-26.1](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.1)
-- Current mod version: `1.4.2+mc26.1`
-- Supported Minecraft versions: `>=26.1 <26.2`
+- Current mod version: `1.4.3+mc26.1`
+- Supported Minecraft versions: `>=26.1 <=26.1.1`
 - Fabric Loader version: `0.18.4`
 - Required Java version: `25`
 - Fabric API version: `0.144.0+26.1`
