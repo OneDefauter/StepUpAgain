@@ -42,12 +42,12 @@ jobs:
           RELEASE_VERSION="${MOD_VERSION%%+*}"
           echo "MOD_VERSION=${MOD_VERSION}" >> "$GITHUB_ENV"
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "$GITHUB_ENV"
-          echo "RELEASE_TAG=v${RELEASE_VERSION}" >> "$GITHUB_ENV"
+          echo "RELEASE_TAG=${GITHUB_REF_NAME}-v${RELEASE_VERSION}" >> "$GITHUB_ENV"
 
       - name: prepare release notes
         shell: bash
         run: |
-          NOTES_FILE=".github/release-notes/${RELEASE_TAG}.md"
+          NOTES_FILE=".github/release-notes/v${RELEASE_VERSION}.md"
           if [ -f "$NOTES_FILE" ]; then
             cp "$NOTES_FILE" release-notes.md
           else
