@@ -1,0 +1,26 @@
+{
+    "mod.stepup.minecraft":"Vanilla",
+    "mod.stepup.autojump":"Auto Jump",
+    "mod.stepup.enabled":"Enabled",
+    "mod.stepup.disabled":"Disabled",
+    "mod.stepup.updateAvailable":"Update Available",
+    "mod.stepup.updateTooltip":"Click here to update from official website",
+    "key.category.stepup.controls" : "StepUp",
+    "key.categories.stepup.controls" : "StepUp",
+    "key.stepup.toggle" : "Toggle Mode (J)",
+    "key.stepup.toggle_vanilla_cycle" : "Toggle Vanilla In Cycle (K)",
+    
+    "mod.stepup.config.default": "Default on new servers",
+    "mod.stepup.config.dostepup": "§aStepUp enabled",
+    "mod.stepup.config.nostepup": "§cStepUp disabled",
+    "mod.stepup.config.vanillajump": "§eUse Vanilla Auto Jump",
+    "mod.stepup.config.tt.onthisserver": "Stepup behavior on this server",
+    "title.stepup.config": "StepUp",
+    "mod.stepup.config.category.general": "General",
+    "mod.stepup.config.allowvanillamode": "Include Vanilla Auto Jump in the toggle cycle",
+    "mod.stepup.config.allowvanillamode.tooltip": "When disabled, the mode toggle only cycles between StepUp and Disabled.",
+    "mod.stepup.config.allowvanillamode.tooltip.short": "When disabled, J only switches between StepUp and Disabled.",
+    "mod.stepup.config.togglehint": "Use J to switch modes and K to add or remove Vanilla Auto Jump from the cycle.",
+    "mod.stepup.config.allowvanillamode.enabled": "Vanilla Auto Jump is now included in the toggle cycle",
+    "mod.stepup.config.allowvanillamode.disabled": "Vanilla Auto Jump is no longer included in the toggle cycle"
+}
