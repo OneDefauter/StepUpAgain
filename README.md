@@ -34,10 +34,13 @@ The mod cycles through three modes:
 
 ## Controls
 
-By default, the mode toggle is bound to `J`.
+StepUp has its own category in Minecraft's Controls menu.
 
 - Press `J` to switch between `StepUp`, `Disabled`, and `Vanilla Auto Jump`.
-- The key can be changed in Minecraft's Controls menu.
+- Press `K` to include or remove `Vanilla Auto Jump` from the `J` toggle cycle.
+- Both keys can be changed in Minecraft's Controls menu.
+- Minecraft's vanilla Auto-Jump option in Controls cycles between `StepUp`, `Vanilla`, and `Off`.
+- If `Vanilla Auto Jump` is removed from the cycle, the Controls option only cycles between `StepUp` and `Off`.
 - The mod shows a short status message in chat after every mode change.
 
 ## Configuration
@@ -50,15 +53,17 @@ config/stepup.json
 
 The configuration is saved per server, so singleplayer and each multiplayer server can keep different movement modes.
 
+Forge's Mods screen also exposes a StepUp config screen. Use it to include or remove `Vanilla Auto Jump` from the mode toggle cycle.
+
 ## Requirements
 
-- Minecraft Java Edition `26.1`
+- Minecraft Java Edition `26.1.x`
 - Minecraft Forge `62.0.2` or newer for `26.1`
 - Java 25
 
 ## Installation
 
-1. Install Minecraft Forge for version `26.1`.
+1. Install Minecraft Forge for version `26.1.x`.
 2. Put the StepUp jar in your `mods` folder.
 3. Start the game.
 
@@ -66,7 +71,7 @@ Because this mod is client-side, it does not require a server-side installation 
 
 ## Compatibility
 
-This port targets Forge on Minecraft `26.1` and uses Mojang's official mappings through ForgeGradle.
+This port targets Forge on Minecraft `26.1.x` through the dependency range `[26.1,26.2)` and uses Mojang's official mappings through ForgeGradle.
 
 ## Notes
 

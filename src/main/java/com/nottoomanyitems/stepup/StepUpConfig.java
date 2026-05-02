@@ -42,11 +42,32 @@ public final class StepUpConfig {
     }
 
     public static int getDefaultState() {
-        return normalizeState(data.defaultState);
+        return coerceState(data.defaultState);
     }
 
     public static int getServerState(String serverKey) {
-        return normalizeState(data.servers.getOrDefault(serverKey, getDefaultState()));
+        return coerceState(data.servers.getOrDefault(serverKey, getDefaultState()));
+    }
+
+    public static boolean isVanillaAutoJumpModeEnabled() {
+        return data.allowVanillaAutoJumpMode == null || data.allowVanillaAutoJumpMode;
+    }
+
+    public static void setVanillaAutoJumpModeEnabled(boolean enabled) {
+        if (isVanillaAutoJumpModeEnabled() == enabled && data.allowVanillaAutoJumpMode != null) {
+            return;
+        }
+
+        data.allowVanillaAutoJumpMode = enabled;
+        save();
+    }
+
+    public static int getNextState(int currentState) {
+        int modeCount = isVanillaAutoJumpModeEnabled()
+                ? StepUpMode.MODE_COUNT_WITH_VANILLA
+                : StepUpMode.MODE_COUNT_WITHOUT_VANILLA;
+
+        return (coerceState(currentState) + 1) % modeCount;
     }
 
     public static void setServerState(String serverKey, int state) {
@@ -54,7 +75,7 @@ public final class StepUpConfig {
             return;
         }
 
-        int normalizedState = normalizeState(state);
+        int normalizedState = coerceState(state);
         if (normalizedState == getDefaultState()) {
             data.servers.remove(serverKey);
         } else {
@@ -63,8 +84,20 @@ public final class StepUpConfig {
         save();
     }
 
+    public static int coerceState(int state) {
+        int normalizedState = normalizeState(state);
+        if (!isVanillaAutoJumpModeEnabled() && normalizedState == StepUpMode.VANILLA_AUTO_JUMP) {
+            return StepUpMode.DISABLED;
+        }
+
+        return normalizedState;
+    }
+
     private static void sanitize() {
-        data.defaultState = normalizeState(data.defaultState);
+        if (data.allowVanillaAutoJumpMode == null) {
+            data.allowVanillaAutoJumpMode = true;
+        }
+        data.defaultState = coerceState(data.defaultState);
         if (data.servers == null) {
             data.servers = new LinkedHashMap<>();
             return;
@@ -76,19 +109,19 @@ public final class StepUpConfig {
             if (key == null || key.isBlank()) {
                 continue;
             }
-            sanitizedServers.put(key, normalizeState(entry.getValue()));
+            sanitizedServers.put(key, coerceState(entry.getValue()));
         }
         data.servers = sanitizedServers;
     }
 
     private static int normalizeState(Integer value) {
         if (value == null) {
-            return 0;
+            return StepUpMode.STEP_UP;
         }
 
         return switch (value) {
-            case 0, 1, 2 -> value;
-            default -> 0;
+            case StepUpMode.STEP_UP, StepUpMode.DISABLED, StepUpMode.VANILLA_AUTO_JUMP -> value;
+            default -> StepUpMode.STEP_UP;
         };
     }
 
@@ -104,7 +137,8 @@ public final class StepUpConfig {
     }
 
     private static final class ConfigData {
-        private int defaultState = 0;
+        private Boolean allowVanillaAutoJumpMode = true;
+        private int defaultState = StepUpMode.STEP_UP;
         private Map<String, Integer> servers = new LinkedHashMap<>();
     }
 }
