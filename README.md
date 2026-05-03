@@ -91,8 +91,26 @@ Use the branch that matches the exact platform and version you want.
 ### Minecraft `26.1`
 
 - Branch: [Forge-26.1](https://github.com/OneDefauter/StepUpAgain/tree/Forge-26.1)
-- Current mod version: `1.4.1+mc26.1`
-- Supported Minecraft versions: `26.1`
+- Current mod version: `1.4.4+mc26.1`
+- Supported Minecraft versions: `>=26.1 <26.2`
 - Forge version: `62.0.2`
 - Supported Forge loader versions: `62.x.x`
 - Required Java version: `25`
+
+## NeoForge
+
+### Minecraft `26.1`
+
+- Branch: [NeoForge-26.1](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-26.1)
+- Current mod version: `1.4.3+mc26.1`
+- Supported Minecraft versions: `>=26.1 <26.2`
+- NeoForge version: `26.1.0.19-beta`
+- Required Java version: `25`
+
+### Minecraft `1.21`
+
+- Branch: [NeoForge-1.21](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-1.21)
+- Current mod version: `1.4.4+mc1.21`
+- Supported Minecraft versions: `>=1.21 <1.22`
+- NeoForge version: `21.0.167`
+- Required Java version: `21`
