@@ -7,7 +7,7 @@ Use the branch that matches the exact platform and version you want.
 
 ### Minecraft `26.2`
 
-- Branch: [Fabric-26.1](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.2)
+- Branch: [Fabric-26.2](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.2)
 - Current mod version: `1.4.5+mc26.2`
 - Supported Minecraft versions: `>=26.2 <=26.3`
 - Fabric Loader version: `0.19.3`
@@ -110,7 +110,7 @@ Use the branch that matches the exact platform and version you want.
 
 ### Minecraft `26.2`
 
-- Branch: [NeoForge-26.1](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-26.2)
+- Branch: [NeoForge-26.2](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-26.2)
 - Current mod version: `1.4.5+mc26.2`
 - Supported Minecraft versions: `>=26.2 <26.3`
 - NeoForge version: `26.2.0.1-beta`
