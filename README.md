@@ -1,116 +1,71 @@
-# StepUpAgain
+# StepUp NeoForge
 
-This repository is organized by loader and by Minecraft target version.  
-Use the branch that matches the exact platform and version you want.
+An updated NeoForge build of **StepUp** for Minecraft `26.2`.
 
-## Fabric
+Current release: `1.4.5+mc26.2`.
 
-### Minecraft `26.1`
+## Release Info
 
-- Branch: [Fabric-26.1](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.1)
-- Current mod version: `1.4.3+mc26.1`
-- Supported Minecraft versions: `>=26.1 <=26.1.1`
-- Fabric Loader version: `0.18.4`
-- Required Java version: `25`
-- Fabric API version: `0.144.0+26.1`
+- Loader: `NeoForge`
+- Minecraft: `26.2`
+- NeoForge: `26.2.0.1-beta`
+- Version: `1.4.5+mc26.2`
+- Environment: `Client-side`
 
-### Minecraft `1.21`
+StepUp increases the player's step height so you can walk up blocks smoothly instead of jumping into them. The result feels similar to vanilla auto-jump at first glance, but the movement is more direct and avoids the awkward timing and hunger cost of repeated jumps.
 
-- Branch: [Fabric-1.21](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.21)
-- Current mod version: `1.4.1+mc1.21`
-- Supported Minecraft versions: `>=1.21 <=1.21.11`
-- Fabric Loader version: `0.15.11`
-- Required Java version: `21`
-- Fabric API version: `0.101.1+1.21`
+## Modes
 
-### Minecraft `1.20`
+- `StepUp`: raises the player's step height above vanilla and falls back to normal height while sneaking.
+- `Disabled`: turns StepUp off and keeps vanilla auto-jump off.
+- `Vanilla Auto Jump`: disables StepUp's custom step-height behavior and enables Minecraft's normal auto-jump option.
 
-- Branch: [Fabric-1.20](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.20)
-- Current mod version: `1.4.1+mc1.20`
-- Supported Minecraft versions: `>=1.20 <=1.20.6`
-- Fabric Loader version: `0.16.10`
-- Required Java version: `17`
-- Fabric API version: `0.100.8+1.20.6`
+## Controls
 
-### Minecraft `1.19`
+StepUp has its own category in Minecraft's Controls menu.
 
-- Branch: [Fabric-1.19](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.19)
-- Current mod version: `1.4.1+mc1.19`
-- Supported Minecraft versions: `>=1.19 <=1.19.4`
-- Fabric Loader version: `0.15.11`
-- Required Java version: `17`
-- Fabric API version: `0.87.2+1.19.4`
+- Press `J` to switch between `StepUp`, `Disabled`, and `Vanilla Auto Jump`.
+- Press `K` to include or remove `Vanilla Auto Jump` from the `J` toggle cycle.
+- Minecraft's vanilla Auto-Jump option in Controls cycles between `StepUp`, `Vanilla`, and `Off`.
+- If `Vanilla Auto Jump` is removed from the cycle, the Auto-Jump option only cycles between `StepUp` and `Off`.
+- The mod shows a short status message in chat after every mode change.
 
-### Minecraft `1.18`
+## Configuration
 
-- Branch: [Fabric-1.18](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.18)
-- Current mod version: `1.4.1+mc1.18`
-- Supported Minecraft versions: `>=1.18 <=1.18.2`
-- Fabric Loader version: `0.14.9`
-- Required Java version: `17`
-- Fabric API version: `0.77.0+1.18.2`
+StepUp stores its settings in:
 
-### Minecraft `1.17`
+```text
+config/stepup.json
+```
 
-- Branch: [Fabric-1.17](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.17)
-- Current mod version: `1.4.1+mc1.17`
-- Supported Minecraft versions: `>=1.17 <=1.17.1`
-- Fabric Loader version: `0.12.0`
-- Required Java version: `16`
-- Fabric API version: `0.46.1+1.17`
+The configuration is saved per server, so singleplayer and each multiplayer server can keep different movement modes.
 
-### Minecraft `1.16`
+## Requirements
 
-- Branch: [Fabric-1.16](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.16)
-- Current mod version: `1.4.1+mc1.16`
-- Supported Minecraft versions: `>=1.16 <=1.16.5`
-- Fabric Loader version: `0.9.0+build.204`
-- Required Java version: `8`
-- Fabric API version: `0.42.0+1.16`
+- Minecraft Java Edition `26.2`
+- NeoForge `26.2.0.1-beta`
+- Java 25
 
-### Minecraft `1.15`
+## Installation
 
-- Branch: [Fabric-1.15](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.15)
-- Current mod version: `1.4.1+mc1.15`
-- Supported Minecraft versions: `>=1.15 <=1.15.2`
-- Fabric Loader version: `0.7.3+build.176`
-- Required Java version: `8`
-- Fabric API version: `0.28.5+1.15`
+1. Install NeoForge for Minecraft `26.2`.
+2. Put the StepUp jar in your `mods` folder.
+3. Start the game.
 
-### Minecraft `1.14`
+Because this mod is client-side, it does not require a server-side installation for normal use.
 
-- Branch: [Fabric-1.14](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-1.14)
-- Current mod version: `1.4.1+mc1.14`
-- Supported Minecraft versions: `>=1.14 <=1.14.4`
-- Fabric Loader version: `0.7.3+build.176`
-- Required Java version: `8`
-- Fabric API version: `0.2.7+build.127`
+## Compatibility
 
-## Forge
+This port targets NeoForge on Minecraft `26.2` through the dependency range `[26.2,26.3)`.
 
-### Minecraft `26.1`
+## Changelog
 
-- Branch: [Forge-26.1](https://github.com/OneDefauter/StepUpAgain/tree/Forge-26.1)
-- Current mod version: `1.4.4+mc26.1`
-- Supported Minecraft versions: `>=26.1 <26.2`
-- Forge version: `62.0.2`
-- Supported Forge loader versions: `62.x.x`
-- Required Java version: `25`
+### `1.4.5+mc26.2`
 
-## NeoForge
+- Updated to Minecraft `26.2` and NeoForge `26.2.0.1-beta`.
+- Removed the native config screen; configuration is now handled through key mappings and `config/stepup.json`.
+- Added the Auto-Jump Controls button cycle for `StepUp`, `Vanilla`, and `Off`, respecting the Vanilla cycle setting.
 
-### Minecraft `26.1`
+## License
 
-- Branch: [NeoForge-26.1](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-26.1)
-- Current mod version: `1.4.3+mc26.1`
-- Supported Minecraft versions: `>=26.1 <26.2`
-- NeoForge version: `26.1.0.19-beta`
-- Required Java version: `25`
-
-### Minecraft `1.21`
-
-- Branch: [NeoForge-1.21](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-1.21)
-- Current mod version: `1.4.4+mc1.21`
-- Supported Minecraft versions: `>=1.21 <1.22`
-- NeoForge version: `21.0.167`
-- Required Java version: `21`
+This fork continues to respect the upstream project's `MIT` license.
