@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "stepup",
+	"version": "${version}",
+	"name": "StepUp",
+	"description": "Walk up full blocks smoothly, with an optional vanilla auto-jump mode controlled through Minecraft key mappings.",
+	"authors": [
+		"NotTooManyItems",
+		"Guntram Blohm"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/stepupagain2",
+		"sources": "https://github.com/OneDefauter/StepUpAgain",
+		"issues": "https://github.com/OneDefauter/StepUpAgain/issues",
+		"github": "https://github.com/OneDefauter/StepUpAgain",
+		"curseforge": "https://www.curseforge.com/minecraft/mc-mods/stepupagain2",
+		"modrinth": "https://modrinth.com/mod/stepupagain2"
+	},
+	"license": "MIT",
+	"icon": "assets/stepup/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.nottoomanyitems.stepup.StepUpClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": ">=26.2 <26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
