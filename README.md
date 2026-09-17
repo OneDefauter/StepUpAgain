@@ -5,11 +5,20 @@ Use the branch that matches the exact platform and version you want.
 
 ## Fabric
 
+### Minecraft `26.3`
+
+- Project: [Fabric-26.3](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.3)
+- Current mod version: `1.4.6+mc26.3`
+- Supported Minecraft versions: `>=26.3 <26.4`
+- Fabric Loader version: `0.19.5`
+- Required Java version: `25`
+- Fabric API version: `0.160.6+26.3`
+
 ### Minecraft `26.2`
 
 - Branch: [Fabric-26.2](https://github.com/OneDefauter/StepUpAgain/tree/Fabric-26.2)
 - Current mod version: `1.4.5+mc26.2`
-- Supported Minecraft versions: `>=26.2 <=26.3`
+- Supported Minecraft versions: `>=26.2 <26.3`
 - Fabric Loader version: `0.19.3`
 - Required Java version: `25`
 - Fabric API version: `0.152.1+26.2`
@@ -107,6 +116,14 @@ Use the branch that matches the exact platform and version you want.
 - Required Java version: `25`
 
 ## NeoForge
+
+### Minecraft `26.3`
+
+- Project: [NeoForge-26.3](https://github.com/OneDefauter/StepUpAgain/tree/NeoForge-26.3)
+- Current mod version: `1.4.6+mc26.3`
+- Supported Minecraft versions: `>=26.3 <26.4`
+- NeoForge version: `26.3.0.3-beta`
+- Required Java version: `25`
 
 ### Minecraft `26.2`
 
